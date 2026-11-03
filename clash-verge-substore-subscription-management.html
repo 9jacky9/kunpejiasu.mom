@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拥有多个设备与订阅如何优雅管理？详解Sub-Store与自定义分流覆写规则技巧 - 鲲鹏加速</title>
+  <meta name="description" content="面向高阶极客与多设备用户，深入讲解如何利用Sub-Store进行多订阅聚合、节点重命名与正则筛选，以及在Clash Verge Rev中使用JavaScript/YAML覆写实现个性化分流。">
+  <link rel="canonical" href="https://kunpejiasu.mom/clash-verge-substore-subscription-management.html">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="li-header">
+  <div class="li-wrap li-nav-row">
+    <a href="index.html" class="li-brand">
+      <svg width="42" height="42" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="鲲鹏加速浮岛紫晶云鲸徽标">
+        <rect x="4" y="4" width="56" height="56" rx="18" fill="#FEF08A" stroke="#2E1065" stroke-width="3"/>
+        <path d="M20 44 C 22 24, 34 14, 44 16 C 46 28, 40 38, 34 44 C 40 46, 46 50, 48 54 C 36 52, 26 48, 20 44 Z" fill="#7C3AED" stroke="#2E1065" stroke-width="2"/>
+        <circle cx="38" cy="24" r="2.5" fill="#FFFFFF"/>
+      </svg>
+      <span class="li-brand-text">鲲鹏加速</span>
+    </a>
+    <nav class="li-nav" aria-label="主导航">
+      <a href="index.html#features">浮岛云鲸</a>
+      <a href="index.html#scenes">流媒体与AI</a>
+      <a href="index.html#plans">漫游套餐</a>
+      <a href="index.html#faq">常见问答</a>
+      <a href="skywhale-notes.html" class="active">云鲸物语</a>
+      <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" class="btn-li-top" rel="nofollow" target="_blank">免费试用</a>
+    </nav>
+  </div>
+</header>
+  <main class="li-doc-sec">
+    <div class="li-wrap">
+      <article class="li-doc-card">
+        <h1>拥有多个设备与订阅如何优雅管理？详解Sub-Store与自定义分流覆写规则技巧</h1>
+        <div class="li-doc-meta"><span>分类：Sub-Store</span><span>作者：鲲鹏加速云鲸研习社</span><span><a href="skywhale-notes.html">返回云鲸物语</a></span></div>
+        <div class="li-doc-body">
+          <h2>为什么高阶极客从来不直接裸用默认配置模板？</h2>
+<p>随着数字生活的深入，许多资深玩家手头往往同时拥有台式机、MacBook笔记本、iPhone主力机、安卓备用机以及家里的OpenWrt软路由，甚至为了追求极致冗余，同时订阅了不止一家专线服务。如果每次新增一条自定义域名分流规则（比如把公司内部海外测试服加入直连，或者把某个新出的AI工具指定到美国节点），都要在五六台设备上挨个手动修改配置文件，不仅费时费力，而且极易在订阅自动更新时被远程默认配置覆盖冲掉。</p>
+
+<h2>神器一：Clash Verge Rev 内置的覆写（Override）机制</h2>
+<p>如果你主要在Windows、macOS或Linux桌面端使用搭载Mihomo（Clash.Meta）内核的Clash Verge Rev客户端，那么学会使用其内置的<strong>“配置覆写（Profiles Override / Merge）”</strong>功能，将让你彻底告别每次更新订阅后规则丢失的烦恼。</p>
+
+<h3>1. 使用YAML Merge追加高优先级自定义规则</h3>
+<p>在Clash Verge Rev的“订阅（Profiles）”界面中，你可以新建一个全局或局部的<code>Merge（扩展配置）</code>文件，并使用<code>prepend-rules</code>指令。只要把你个人常用的<code>DOMAIN-SUFFIX</code>、<code>DOMAIN-KEYWORD</code>或<code>PROCESS-NAME</code>（按本地程序名分流，例如让游戏客户端直走日服专线、让迅雷强制走国内直连）写在<code>prepend-rules</code>列表下，每次远程订阅更新时，客户端都会自动把你的私有规则置顶插入到最前方优先匹配。</p>
+
+<h3>2. 利用JavaScript扩展脚本实现动态策略组注入</h3>
+<p>对于熟悉前端代码的玩家，Mihomo内核还支持强大的JavaScript预处理脚本（<code>function main(config)</code>）。你可以通过短短十几行JS代码，利用正则表达式自动扫描订阅中的所有节点名称：例如将所有包含“香港|HK”的节点自动归入自建的“极速办公组”，将所有包含“美国|US|硅谷”的节点自动归入“AI专属组”，并为每个组开启基于<code>url-test</code>的容灾回退。更多现成的开源覆写脚本与高阶规则模板，可以前往<a href="https://tizilab.net/" target="_blank">代理订阅管理与分流规则进阶库</a>免费获取与参考。</p>
+
+<h2>神器二：Sub-Store 多订阅聚合与云端同步中枢</h2>
+<p>如果你希望在iPhone（Shadowrocket / Stash / Loon / Surge）与电脑端共用同一套完美整理好的节点列表，那么由开源社区维护的<strong>Sub-Store</strong>则是当之无愧的终极武器。</p>
+
+<h3>1. 多源订阅合并与节点智能去重排序</h3>
+<p>通过Sub-Store的组合订阅（Collection）功能，你可以将主用IEPL专线订阅与备用节点合并为一条统一的私有链接，并按国家地区、倍率高低自动重新排序、统一添加国旗与清晰的前缀标签。</p>
+
+<h3>2. 一键转换输出适配全平台客户端格式</h3>
+<p>更令人惊艳的是，Sub-Store内置了强大的协议与规则转换器。你只需维护一份核心配置，就能通过在链接末尾添加不同参数，自动输出完美适配Mihomo、Sing-box、Surge、Quantumult X或Loon的原生配置文件，结合Gist云端同步，真正实现“一处修改，全屋十台设备秒级同步生效”。</p>
+
+<p>在日常多终端协同办公与超高清流媒体娱乐中，依托鲲鹏加速稳定可靠的IEPL内网专线与高纯净度原生ISP住宅节点，不仅能够彻底告别繁琐的验证码拦截与晚高峰缓冲，更能让每一次跨国连接都如云中飞鲸般轻盈顺畅。</p>
+<p>无论是随时随地同步云端设计画布，还是在深夜静享母带级空间音频，科学的客户端分流配置与高品质底层专线的结合，始终是提升数字生活幸福感的关键所在。</p>
+<p>建议定期在客户端中更新最新的GeoIP与GeoSite分流规则库，并结合自身所在地区的宽带运营商特性锁定延迟最低的省内BGP入口，从而在全天候各类复杂网络场景下始终保持毫秒级的瞬时响应体验。</p>
+        </div>
+        <div style="margin-top:32px;padding:24px;background:var(--bg-lilac);border:2px solid var(--ink-aubergine);border-radius:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+          <div>
+            <strong style="font-size:1.1rem;color:var(--ink-aubergine);display:block;">立即体验鲲鹏加速浮岛云鲸般的丝滑网络</strong>
+            <span style="font-size:0.9rem;color:#4C1D95;">原生ISP住宅IP配合IEPL专线，一键秒开4K流媒体、海外网课与AI创作工具。</span>
+          </div>
+          <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" class="btn-li-violet" rel="nofollow" target="_blank">免费注册试用</a>
+        </div>
+      </article>
+    </div>
+  </main>
+  <footer class="li-footer">
+  <div class="li-wrap li-footer-row">
+    <div>
+      <strong style="font-size: 1.15rem; color: #FFFFFF;">鲲鹏加速</strong>
+      <p style="font-size: 0.86rem; color: #DDD6FE; margin-top: 4px;">浮空云岛与破云紫晶鲸 · 全球原生住宅IP与IEPL高速专线</p>
+    </div>
+    <div class="li-footer-links">
+      <a href="sitemap.html">网站地图</a>
+      <a href="about.html">关于我们</a>
+      <a href="terms.html">服务条款</a>
+      <a href="privacy.html">隐私政策</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
