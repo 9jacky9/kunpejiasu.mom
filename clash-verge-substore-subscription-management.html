@@ -45,7 +45,7 @@
 <p>在Clash Verge Rev的“订阅（Profiles）”界面中，你可以新建一个全局或局部的<code>Merge（扩展配置）</code>文件，并使用<code>prepend-rules</code>指令。只要把你个人常用的<code>DOMAIN-SUFFIX</code>、<code>DOMAIN-KEYWORD</code>或<code>PROCESS-NAME</code>（按本地程序名分流，例如让游戏客户端直走日服专线、让迅雷强制走国内直连）写在<code>prepend-rules</code>列表下，每次远程订阅更新时，客户端都会自动把你的私有规则置顶插入到最前方优先匹配。</p>
 
 <h3>2. 利用JavaScript扩展脚本实现动态策略组注入</h3>
-<p>对于熟悉前端代码的玩家，Mihomo内核还支持强大的JavaScript预处理脚本（<code>function main(config)</code>）。你可以通过短短十几行JS代码，利用正则表达式自动扫描订阅中的所有节点名称：例如将所有包含“香港|HK”的节点自动归入自建的“极速办公组”，将所有包含“美国|US|硅谷”的节点自动归入“AI专属组”，并为每个组开启基于<code>url-test</code>的容灾回退。更多现成的开源覆写脚本与高阶规则模板，可以前往<a href="https://tizilab.net/" target="_blank">代理订阅管理与分流规则进阶库</a>免费获取与参考。</p>
+<p>对于熟悉前端代码的玩家，Mihomo内核还支持强大的JavaScript预处理脚本（<code>function main(config)</code>）。你可以通过短短十几行JS代码，利用正则表达式自动扫描订阅中的所有节点名称：例如将所有包含“香港|HK”的节点自动归入自建的“极速办公组”，将所有包含“美国|US|硅谷”的节点自动归入“AI专属组”，并为每个组开启基于<code>url-test</code>的容灾回退。更多现成的开源覆写脚本与高阶规则模板，可以前往代理订阅管理与分流规则进阶库免费获取与参考。</p>
 
 <h2>神器二：Sub-Store 多订阅聚合与云端同步中枢</h2>
 <p>如果你希望在iPhone（Shadowrocket / Stash / Loon / Surge）与电脑端共用同一套完美整理好的节点列表，那么由开源社区维护的<strong>Sub-Store</strong>则是当之无愧的终极武器。</p>
